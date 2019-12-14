@@ -1,11 +1,49 @@
 #include <iostream>
 #include <stdlib.h>
+#include <stdio.h>
 
 using namespace std;
 
+struct produto{
+    string nome;
+    string codBar;
+    float preco;
+    int diaV;
+    int mesV;
+    int anoV;
+    int qtd;
+    char status;
+
+    void insereProduto(string n, string c, float p, int d, int m, int a, int q, char s){
+        nome = n;
+        codBar = c;
+        preco = p;
+        diaV = d;
+        mesV = m;
+        anoV = a;
+        qtd = q;
+        status = s;
+    }
+
+    void exibeProduto(){
+        cout << "\nNOME..................: " << nome << "\n";
+        cout << "CÓDIGO DE BARRA.......: " << codBar << "\n";
+        cout << "PREÇO.................: " << preco << "\n";
+        cout << "DATA DE VENCIMENTO....: " << diaV << "/" << mesV << "/" << anoV;
+        if(qtd == 0){
+            cout << "\nPRODUTO ESGOTADO!\n";
+        } else{
+            cout << "\nRESTA(M) " << qtd << " UNIDADE(S) NO ESTOQUE\n";
+        }
+        cout << "\n";
+    }
+};
+
 void logotipoPrincipal(void);
 char menuPrincipal(void);
+
 void cadastraProduto(void);
+void logoCadastraProduto(void);
 void listaProdutos(void);
 void editaProduto(void);
 void deletaProduto(void);
@@ -64,7 +102,42 @@ char menuPrincipal(void){
 }
 
 void cadastraProduto(void){
-    cout << "\nEm breve\n";
+    logoCadastraProduto();
+    produto novoProduto;
+    string name;
+    string cod;
+    float price;
+    int day, month, year;
+    int quantidade;
+
+    setbuf(stdin, NULL);
+    cout << "\nINFORME DOS DADOS A SEGUIR:\n";
+    cout << "\nNome: ";
+    getline(cin, name);
+    cout << "\n\nCódigo de Barras: ";
+    cin >> cod;
+    cout << "\n\nPreço: ";
+    cin >> price;
+    cout << "\n\nData de Vencimento: (DIA MÊS ANO): ";
+    cin >> day >> month >> year;
+    cout << "\n\nQuantidade no Estoque: ";
+    cin >> quantidade;
+
+    novoProduto.insereProduto(name, cod, price, day, month, year, quantidade, 'c');
+    novoProduto.exibeProduto();
+    
+}
+
+void exibeProduto(produto prod){
+    cout << "\nNome: " << prod.nome;
+    cout << "\nCódigo de Barras: " << prod.codBar;
+    cout << "\nPreço: " << prod.preco;
+    cout << "\nData de Vencimento: " << prod.diaV << "/" << prod.mesV << "/" << prod.anoV;
+    if(prod.qtd == 0){
+        cout << "\nATENÇÃO: PRODUTO ESGOTADO!";
+    } else{
+        cout << "Resta(m) " << prod.qtd << " unidade(s) no estoque.";
+    }
 }
 
 void listaProdutos(void){
@@ -89,4 +162,12 @@ void listaRelatorio(void){
 
 void sobre(void){
     cout << "\nEm breve\n";
+}
+
+void logoCadastraProduto(void){
+    system("cls||clear");
+    cout << "  _       _        __ ___ _        _     _   _   _   _     ___ _  \n"
+    " /   /\\  | \\  /\\  (_   | |_)  /\\  |_)   |_) |_) / \\ | \\ | | | / \\ \n"
+    " \\_ /--\\ |_/ /--\\ __)  | | \\ /--\\ | \\   |   | \\ \\_/ |_/ |_| | \\_/ \n"
+    "                                                                  ";
 }
