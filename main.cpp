@@ -1,8 +1,23 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctime>
 
 using namespace std;
+
+void logotipoPrincipal(void);
+char menuPrincipal(void);
+
+void cadastraProduto(void);
+void logoCadastraProduto(void);
+void listaProdutos(void);
+void editaProduto(void);
+void deletaProduto(void);
+void registraCompra(void);
+void listaRelatorio(void);
+void sobre(void);
+
+int calculaVencimento(int, int, int, int, int, int);
 
 struct produto{
     string nome;
@@ -26,10 +41,25 @@ struct produto{
     }
 
     void exibeProduto(){
+        struct tm *date;
+        time_t segundos;
+        time(&segundos);
+        date = localtime(&segundos);
+
+        int contVenci;
+        int diaA, mesA, anoA;
+        diaA = date->tm_mday;
+        mesA = date->tm_mon + 1;
+        anoA = date->tm_year + 1900;
+        contVenci = calculaVencimento(diaV, mesV, anoV, diaA, mesA, anoA);
         cout << "\nNOME..................: " << nome << "\n";
-        cout << "CÓDIGO DE BARRA.......: " << codBar << "\n";
-        cout << "PREÇO.................: " << preco << "\n";
-        cout << "DATA DE VENCIMENTO....: " << diaV << "/" << mesV << "/" << anoV;
+        cout << "CÓDIGO DE BARRA.........: " << codBar << "\n";
+        cout << "PREÇO...................: " << preco << "\n";
+        if(contVenci == 0){
+            cout << "ATENÇÃO! PRODUTO FORA DO PRAZO DE VALIDADE";
+        } else{
+            cout << "DATA DE VENCIMENTO......: " << diaV << "/" << mesV << "/" << anoV;
+        }
         if(qtd == 0){
             cout << "\nPRODUTO ESGOTADO!\n";
         } else{
@@ -38,18 +68,6 @@ struct produto{
         cout << "\n";
     }
 };
-
-void logotipoPrincipal(void);
-char menuPrincipal(void);
-
-void cadastraProduto(void);
-void logoCadastraProduto(void);
-void listaProdutos(void);
-void editaProduto(void);
-void deletaProduto(void);
-void registraCompra(void);
-void listaRelatorio(void);
-void sobre(void);
 
 int main(void){
     system("cls||clear");
@@ -170,4 +188,16 @@ void logoCadastraProduto(void){
     " /   /\\  | \\  /\\  (_   | |_)  /\\  |_)   |_) |_) / \\ | \\ | | | / \\ \n"
     " \\_ /--\\ |_/ /--\\ __)  | | \\ /--\\ | \\   |   | \\ \\_/ |_/ |_| | \\_/ \n"
     "                                                                  ";
+}
+
+int calculaVencimento(int d1, int m1, int a1, int d2, int m2, int a2){
+    if(a1 < a2){
+        return 0;
+    } else if((a1 == a2) && (m1 < m2)){
+        return 0;
+    } else if((a1 == a2) && (m1 == m2) && (d1 < d2)){
+        return 0;
+    } else{
+        return 1;
+    }
 }
