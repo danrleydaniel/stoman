@@ -19,7 +19,63 @@ void sobre(void);
 
 int calculaVencimento(int, int, int, int, int, int);
 
-struct produto{
+class Produto{
+    public:
+        string nome;
+        string codBar;
+        float preco;
+        int diaV;
+        int mesV;
+        int anoV;
+        int qtd;
+        char status;
+
+        void insereProduto(string n, string c, float p, int d, int m, int a, int q, char s);
+        void exibeProduto(void);
+    private:
+};
+
+void Produto::insereProduto(string n, string c, float p, int d, int m, int a, int q, char s){
+    this->nome = n;
+    this->codBar = c;
+    this->preco = p;
+    this->diaV = d;
+    this->mesV = m;
+    this->anoV = a;
+    this->qtd = q;
+    this->status = s;
+}
+
+void Produto::exibeProduto(void){
+    struct tm *date;
+    time_t segundos;
+    time(&segundos);
+    date = localtime(&segundos);
+
+    int contVenci;
+    int diaA, mesA, anoA;
+    diaA = date->tm_mday;
+    mesA = date->tm_mon + 1;
+    anoA = date->tm_year + 1900;
+    contVenci = calculaVencimento(this->diaV, this->mesV, this->anoV, diaA, mesA, anoA);
+
+    cout << "\nNOME..................: " << this->nome << "\n";
+    cout << "CÓDIGO DE BARRA.........: " << this->codBar << "\n";
+    cout << "PREÇO...................: " << this->preco << "\n";
+    if(contVenci == 0){
+        cout << "ATENÇÃO! PRODUTO FORA DO PRAZO DE VALIDADE";
+    } else{
+        cout << "DATA DE VENCIMENTO......: " << this->diaV << "/" << this->mesV << "/" << this->anoV;
+    }
+    if(qtd == 0){
+        cout << "\nPRODUTO ESGOTADO!\n";
+    } else{
+        cout << "\nRESTA(M) " << this->qtd << " UNIDADE(S) NO ESTOQUE\n";
+    }
+    cout << "\n";
+}
+
+/*struct produto{
     string nome;
     string codBar;
     float preco;
@@ -68,6 +124,7 @@ struct produto{
         cout << "\n";
     }
 };
+*/
 
 int main(void){
     system("cls||clear");
@@ -121,7 +178,7 @@ char menuPrincipal(void){
 
 void cadastraProduto(void){
     logoCadastraProduto();
-    produto novoProduto;
+    Produto *novoProduto = new Produto();
     string name;
     string cod;
     float price;
@@ -141,21 +198,9 @@ void cadastraProduto(void){
     cout << "\n\nQuantidade no Estoque: ";
     cin >> quantidade;
 
-    novoProduto.insereProduto(name, cod, price, day, month, year, quantidade, 'c');
-    novoProduto.exibeProduto();
+    novoProduto->insereProduto(name, cod, price, day, month, year, quantidade, 'c');
+    novoProduto->exibeProduto();
     
-}
-
-void exibeProduto(produto prod){
-    cout << "\nNome: " << prod.nome;
-    cout << "\nCódigo de Barras: " << prod.codBar;
-    cout << "\nPreço: " << prod.preco;
-    cout << "\nData de Vencimento: " << prod.diaV << "/" << prod.mesV << "/" << prod.anoV;
-    if(prod.qtd == 0){
-        cout << "\nATENÇÃO: PRODUTO ESGOTADO!";
-    } else{
-        cout << "Resta(m) " << prod.qtd << " unidade(s) no estoque.";
-    }
 }
 
 void listaProdutos(void){
