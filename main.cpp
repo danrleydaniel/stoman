@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctime>
+#include <Math.h>
 #include "funcionalidades.h"
+#include "validacoes.h"
 
 using namespace std;
 
@@ -77,22 +79,38 @@ void cadastraProduto(void){
     string cod;
     float price;
     int day, month, year;
-    int quantidade;
+    string quantidade;
 
     setbuf(stdin, NULL);
     cout << "\nINFORME DOS DADOS A SEGUIR:\n";
     cout << "\nNome: ";
     getline(cin, name);
-    cout << "\n\nCódigo de Barras: ";
-    cin >> cod;
-    cout << "\n\nPreço: ";
-    cin >> price;
-    cout << "\n\nData de Vencimento: (DIA MÊS ANO): ";
-    cin >> day >> month >> year;
-    cout << "\n\nQuantidade no Estoque: ";
-    cin >> quantidade;
 
-    novoProduto->insereProduto(name, cod, price, day, month, year, quantidade, 'c');
+    cout << "\nCódigo de Barras: ";
+    cin >> cod;
+    while(!validaCodBar(cod)){
+        cout << "Código de Barras inválido! Informe novamente: ";
+        cin >> cod;
+    }
+
+    cout << "\nPreço: ";
+    cin >> price;
+
+    cout << "\nData de Vencimento: (DIA/MÊS/ANO): ";
+    scanf("%d/%d/%d", &day, &month, &year);
+    while(!validaData(day, month, year)){
+        cout << "Data inválida! Informe novamente: ";
+        scanf("%d/%d/%d", &day, &month, &year);
+    }
+
+    cout << "\nQuantidade no Estoque: ";
+    cin >> quantidade;
+    while(!validaValor(quantidade)){
+        cout << "Número inválido! Informe novamente: ";
+        cin >> quantidade;
+    }
+
+    novoProduto->insereProduto(name, cod, price, day, month, year, stringtoint(quantidade), 'c');
     novoProduto->exibeProduto();
     
 }
