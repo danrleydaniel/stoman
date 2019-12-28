@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctime>
 #include <Math.h>
+#include <string>
 #include "funcionalidades.h"
 #include "validacoes.h"
 
@@ -77,7 +78,7 @@ void cadastraProduto(void){
     Produto *novoProduto = new Produto();
     string name;
     string cod;
-    float price;
+    string price;
     int day, month, year;
     string quantidade;
 
@@ -95,6 +96,10 @@ void cadastraProduto(void){
 
     cout << "\nPreço: ";
     cin >> price;
+    while(!validaPreco(price)){
+        cout << "Preço inválido! Informe novamente: ";
+        cin >> price;
+    }
 
     cout << "\nData de Vencimento: (DIA/MÊS/ANO): ";
     scanf("%d/%d/%d", &day, &month, &year);
@@ -110,7 +115,7 @@ void cadastraProduto(void){
         cin >> quantidade;
     }
 
-    novoProduto->insereProduto(name, cod, price, day, month, year, stringtoint(quantidade), 'c');
+    novoProduto->insereProduto(name, cod, stof(price), day, month, year, stringtoint(quantidade), 'c');
     novoProduto->exibeProduto();
     
 }
