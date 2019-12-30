@@ -1,6 +1,7 @@
 #ifndef FUNCIONALIDADES_H_INCLUDED
 #define FUNCIONALIDADES_H_INCLUDED
 #include <iostream>
+#include <fstream>
 #include <ctime>
 
 
@@ -8,6 +9,18 @@ using namespace std;
 
 
 int calculaVencimento(int, int, int, int, int, int);
+void insereString(char*, string);
+
+struct noProduto{
+    char nome[50];
+    char codBar[13];
+    float preco;
+    int diaV;
+    int mesV;
+    int anoV;
+    int qtd;
+    char status;
+};
 
 class Produto{
     public:
@@ -23,6 +36,7 @@ class Produto{
         void insereProduto(string n, string c, float p, int d, int m, int a, int q, char s);
         void exibeProduto(void);
     private:
+        void gravaProduto(string n, string c, float p, int d, int m, int a, int q, char s);
 };
 
 void Produto::insereProduto(string n, string c, float p, int d, int m, int a, int q, char s){
@@ -34,6 +48,8 @@ void Produto::insereProduto(string n, string c, float p, int d, int m, int a, in
     this->anoV = a;
     this->qtd = q;
     this->status = s;
+
+    this->gravaProduto(n, c, p, d, m, a, q, s);
 }
 
 void Produto::exibeProduto(void){
@@ -63,6 +79,32 @@ void Produto::exibeProduto(void){
         cout << "\nRESTA(M) " << this->qtd << " UNIDADE(S) NO ESTOQUE\n";
     }
     cout << "\n";
+}
+
+void Produto::gravaProduto(string n, string c, float p, int d, int m, int a, int q, char s){
+    ofstream arq;
+    arq.open("produtos.dat",ios::app);
+
+    if(!arq.is_open()){
+        cout << "\nHouve um erro na abertura do arquivo 'produtos.dat', o programa será encerrado.\n";
+        exit(1);
+    }
+
+    arq << "Nome: " << n << "\n";
+    arq << "Código de Barras: " << c << "\n";
+    arq << "Preço: " << p << "\n";
+    arq << "Data de Vencimento: " << d << "/" << m << "/" << a << "\n";
+    arq << "Quantidade: " << q << "\n";
+    arq << "ENDINFO\n";
+
+    arq.close();
+}
+
+void insereString(char* p, string s){
+    int tam = s.size();
+    for(int i = 0; i < tam; i++){
+        p[i] = s[i];
+    }
 }
 
 int calculaVencimento(int d1, int m1, int a1, int d2, int m2, int a2){
