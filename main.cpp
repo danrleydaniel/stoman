@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctime>
 #include <Math.h>
+#include <fstream>
 #include <string>
 #include "funcionalidades.h"
 #include "validacoes.h"
@@ -14,7 +15,10 @@ char menuPrincipal(void);
 
 void cadastraProduto(void);
 void logoCadastraProduto(void);
+
 void listaProdutos(void);
+void logoListaProdutos(void);
+
 void editaProduto(void);
 void deletaProduto(void);
 void registraCompra(void);
@@ -121,7 +125,26 @@ void cadastraProduto(void){
 }
 
 void listaProdutos(void){
-    cout << "\nEm breve\n";
+    logoListaProdutos();
+
+    ifstream arq;
+    string line;
+    arq.open("produtos.dat");
+    
+    if(!arq.is_open()){
+        cout << "\nHouve um erro na abertura do arquivo 'produtos.dat'. Não é possível prosseguir com o programa.\n";
+        exit(1);
+    }
+
+    cout << "\n===================================================\n";
+    while(getline(arq, line)){
+        if(line == "ENDINFO"){
+            cout << "===================================================\n";
+        } else{
+            cout << line << "\n";
+        }
+    }
+
 }
 
 void editaProduto(void){
@@ -152,3 +175,10 @@ void logoCadastraProduto(void){
     "                                                                  ";
 }
 
+void logoListaProdutos(void){
+    system("cls||clear");
+    cout << "    ___  __ ___        _   _    _   _   _   _     ___ _   __ \n"
+    " |   |  (_   |  /\\    | \\ |_   |_) |_) / \\ | \\ | | | / \\ (_  \n"
+    " |_ _|_ __)  | /--\\   |_/ |_   |   | \\ \\_/ |_/ |_| | \\_/ __) \n"
+    "                                                             ";
+}
